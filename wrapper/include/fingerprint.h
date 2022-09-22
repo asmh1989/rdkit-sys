@@ -2,9 +2,12 @@
 
 #include "rust/cxx.h"
 
-namespace RDKit {
+namespace RDKit
+{
     using ExplicitBitVect = ::ExplicitBitVect;
     std::shared_ptr<ExplicitBitVect> fingerprint_mol(std::shared_ptr<ROMol> mol);
+    std::unique_ptr<std::vector<uint64_t>> fingerprint_mol2(std::shared_ptr<ROMol> mol);
+
     std::shared_ptr<ExplicitBitVect> copy_explicit_bit_vect(std::shared_ptr<ExplicitBitVect> orig);
     unsigned int get_num_on_bits(std::shared_ptr<ExplicitBitVect> bitvect);
 

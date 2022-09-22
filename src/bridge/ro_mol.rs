@@ -9,6 +9,8 @@ pub mod ffi {
 
         pub fn copy_mol(mol: SharedPtr<ROMol>) -> SharedPtr<ROMol>;
 
+        pub fn remove_hs(mol: SharedPtr<ROMol>) -> SharedPtr<ROMol>;
+
         pub fn smiles_to_mol(smi: &CxxString) -> Result<SharedPtr<ROMol>>;
 
         pub fn smiles_to_mol_with_params(

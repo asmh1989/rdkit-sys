@@ -8,8 +8,10 @@
 #include <GraphMol/Fingerprints/Fingerprints.h>
 #include <GraphMol/MolStandardize/Tautomer.h>
 
-namespace RDKit {
+namespace RDKit
+{
     std::shared_ptr<ROMol> copy_mol(std::shared_ptr<ROMol> mol);
+    std::shared_ptr<ROMol> remove_hs(std::shared_ptr<ROMol> mol);
     std::shared_ptr<ROMol> smiles_to_mol(const std::string &smiles);
     rust::String mol_to_smiles(std::shared_ptr<ROMol> mol);
 

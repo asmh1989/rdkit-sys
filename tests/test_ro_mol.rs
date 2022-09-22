@@ -6,6 +6,23 @@ fn test_ro_mol() {
 }
 
 #[test]
+fn test_fingerprint2() {
+    cxx::let_cxx_string!(smile = "[Na]OC(=O)c1ccc(C[S+2]([O-])([O-]))cc1");
+
+    // cxx::let_cxx_string!(smile = "[C@]12([H])CCC1CO2");
+
+    let romol = rdkit_sys::ro_mol_ffi::smiles_to_mol(&smile).unwrap();
+
+    println!("{:?}", rdkit_sys::ro_mol_ffi::mol_to_smiles(romol.clone()));
+
+    let vv = rdkit_sys::fingerprint_ffi::fingerprint_mol2(romol);
+
+    let bytes: Vec<u64> = vv.into_iter().map(|x| *x).collect();
+
+    println!("<{}>id = {:?}", vv.len(), bytes);
+}
+
+#[test]
 fn bad_mol_test() {
     cxx::let_cxx_string!(smile = "F(C)(C)(C)(C)(C)");
     let romol = rdkit_sys::ro_mol_ffi::smiles_to_mol(&smile);

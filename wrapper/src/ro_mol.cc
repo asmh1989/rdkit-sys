@@ -7,41 +7,59 @@
 #include <GraphMol/MolStandardize/Tautomer.h>
 #include <GraphMol/MolOps.h>
 
-namespace RDKit {
+namespace RDKit
+{
     using ExplicitBitVect = ::ExplicitBitVect;
 
-    std::shared_ptr<ROMol> copy_mol(std::shared_ptr<ROMol> mol) {
+    std::shared_ptr<ROMol> copy_mol(std::shared_ptr<ROMol> mol)
+    {
         return std::shared_ptr<ROMol>(new ROMol(*mol));
     }
 
-    std::shared_ptr<ROMol> smiles_to_mol(const std::string &smiles) {
-        ROMol *mol = SmilesToMol(smiles);
+    std::shared_ptr<ROMol> remove_hs(std::shared_ptr<ROMol> mol)
+    {
+        ROMol ro_mol(*mol);
+        RDKit::MolOps::RemoveHsParameters ps;
+        ROMol *mol2 = RDKit::MolOps::removeHs(ro_mol, ps, true);
+        return std::shared_ptr<ROMol>(mol2);
+    }
+
+    std::shared_ptr<ROMol> smiles_to_mol(const std::string &smiles)
+    {
+        RDKit::SmilesParserParams params = RDKit::SmilesParserParams();
+        ROMol *mol = SmilesToMol(smiles, params);
 
         return std::shared_ptr<ROMol>(mol);
     }
 
-    std::shared_ptr<ROMol> smiles_to_mol_with_params(const std::string &smiles, std::shared_ptr<SmilesParserParams> params) {
+    std::shared_ptr<ROMol> smiles_to_mol_with_params(const std::string &smiles, std::shared_ptr<SmilesParserParams> params)
+    {
         ROMol *mol = SmilesToMol(smiles, *params);
 
         return std::shared_ptr<ROMol>(mol);
     }
-    std::shared_ptr<SmilesParserParams> new_smiles_parser_params() {
+    std::shared_ptr<SmilesParserParams> new_smiles_parser_params()
+    {
         return std::shared_ptr<SmilesParserParams>(new SmilesParserParams());
     }
-    void smiles_parser_params_set_sanitize(std::shared_ptr<SmilesParserParams> params, bool sanitize) {
+    void smiles_parser_params_set_sanitize(std::shared_ptr<SmilesParserParams> params, bool sanitize)
+    {
         params->sanitize = sanitize;
     }
 
-    rust::String mol_to_smiles(std::shared_ptr<ROMol> mol) {
+    rust::String mol_to_smiles(std::shared_ptr<ROMol> mol)
+    {
         return MolToSmiles(*mol);
     }
 
-    std::unique_ptr<std::vector<std::string>> detect_chemistry_problems(std::shared_ptr<ROMol> mol) {
+    std::unique_ptr<std::vector<std::string>> detect_chemistry_problems(std::shared_ptr<ROMol> mol)
+    {
         std::vector<std::unique_ptr<RDKit::MolSanitizeException>> exceptions = RDKit::MolOps::detectChemistryProblems(*mol);
         std::vector<std::string> *get_types = new std::vector<std::string>;
         get_types->reserve(exceptions.size());
 
-        for (auto &t: exceptions) {
+        for (auto &t : exceptions)
+        {
             get_types->push_back(t->getType());
         }
 

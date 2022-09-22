@@ -27,7 +27,7 @@ fn main() {
         }
         ("macos", "x86_64", _) => "/usr/local".to_string(),
         ("macos", "aarch64", _) => "/opt/homebrew".to_string(),
-        ("linux", _, _) => "/usr".to_string(),
+        ("linux", _, _) => "/home/ubuntu/rdkit".to_string(),
         (unsupported_os, unsupported_arch, use_conda) => panic!(
             "sorry, rdkit-sys doesn't support {}/{}/use_conda={} at this time",
             unsupported_os, unsupported_arch, use_conda
@@ -110,16 +110,16 @@ fn main() {
         "Subgraphs",
         "SubstructMatch",
     ] {
-        if use_conda {
-            println!("cargo:rustc-link-lib=dylib=RDKit{}", lib);
-        } else {
-            println!("cargo:rustc-link-lib=static=RDKit{}_static", lib);
-        }
+        // if use_conda {
+        println!("cargo:rustc-link-lib=dylib=RDKit{}", lib);
+        // } else {
+        //     println!("cargo:rustc-link-lib=static=RDKit{}_static", lib);
+        // }
     }
 
-    if use_conda {
-        println!("cargo:rustc-link-lib=dylib=boost_serialization");
-    } else {
-        println!("cargo:rustc-link-lib=static=boost_serialization");
-    }
+    // if use_conda {
+    println!("cargo:rustc-link-lib=dylib=boost_serialization");
+    // } else {
+    //     println!("cargo:rustc-link-lib=static=boost_serialization");
+    // }
 }
