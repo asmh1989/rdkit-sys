@@ -12,9 +12,7 @@ namespace RDKit
 
     std::unique_ptr<std::vector<uint64_t>> fingerprint_mol2(std::shared_ptr<ROMol> mol)
     {
-        ROMol ro_mol(*mol);
-
-        std::vector<uint32_t> *invars = new std::vector<uint32_t>(ro_mol.getNumAtoms());
+        std::vector<uint32_t> *invars = new std::vector<uint32_t>(mol->getNumAtoms());
         RDKit::MorganFingerprints::getFeatureInvariants(*mol, *invars);
 
         auto res = RDKit::MorganFingerprints::getFingerprint(
@@ -33,6 +31,7 @@ namespace RDKit
             bytes.push_back(val.first);
         }
         delete invars;
+        delete res;
 
         std::vector<uint64_t> *bytes_heap = new std::vector<uint64_t>(bytes);
 
